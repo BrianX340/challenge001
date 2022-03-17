@@ -7,10 +7,10 @@ module.exports = {
         const userId = req.user._id
 
         if(!concept || !amount || !type || isNaN(amount)){
-            res.json({status:'error'})
+            return res.json({status:'error'})
         } 
         if(type != 'deposit' && type != 'retirement'){
-            res.json({status:'error'})
+            return res.json({status:'error'})
         }
 
 
