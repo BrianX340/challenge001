@@ -16,28 +16,55 @@ module.exports = {
             });
         }
 
-        return User.findOne({ email }).exec()
-            .then(user => {
-                if (!user) {
-                    return res.send({ 'status': 'error', 'error': 'Email inexistente.' })
-                }
-                return crypto.pbkdf2(password, user.salt, 10000, 64, 'sha1', (err, key) => {
-                    const encryptedPass = key.toString('base64')
-                    if (user.password != encryptedPass) {
-                        return res.send({ 'status': 'error', 'msg': 'password_error' })
-                    }
+        return User.findOne({ email })
+                    .populate({
+                        path: 'movements'
+                    })
+                        .then(user=>{
+                            if (!user) {
+                                return res.send({ 'status': 'error', 'error': 'Email inexistente.' })
+                            }
 
-                    return signToken(user)
-                        .then(token => {
-                            return res.header("auth-token", token)
-                                .json({
-                                    status: 'ok',
-                                    user,
-                                    token,
-                                });
+                            return crypto.pbkdf2(password, user.salt, 10000, 64, 'sha1', (err, key) => {
+                                const encryptedPass = key.toString('base64')
+                                if (user.password != encryptedPass) {
+                                    return res.send({ 'status': 'error', 'msg': 'password_error' })
+                                }
+
+                                movementsFiltered = []
+
+                                user.movements.map(operation =>{
+                                    filteredOperation = {
+                                        concept: operation.concept,
+                                        amount: operation.amount,
+                                        type: operation.type,
+                                        createdAt: operation.createdAt
+                                    }
+                                    movementsFiltered.push(filteredOperation)
+                                })
+
+                                var userFiltered = {
+                                    _id: user._id,
+                                    email: user.email,
+                                    movements: movementsFiltered,
+                                    role: user.role
+                                }
+
+                                
+                                return signToken(user)
+                                .then(token => {
+                                    userFiltered = {
+                                        ...userFiltered,
+                                        token
+                                    };
+                                    return res.header("auth-token", token)
+                                        .json({
+                                            status: 'ok',
+                                            user:userFiltered,
+                                        });
+                                    })
+                            })
                         })
-                })
-            })
     },
 
     register: async(req, res) => {

@@ -3,23 +3,48 @@ const Operation = require('../models/Operation')
 
 module.exports = {
     createOperation: (req, res) => {
-        var { concept, amount, date, type } = req.body
+        var { concept, amount, type } = req.body
         const userId = req.user._id
 
-        if(!concept || !amount || !date || !type){
+        if(!concept || !amount || !type || isNaN(amount)){
+            res.json({status:'error'})
+        } 
+        if(type != 'deposit' && type != 'retirement'){
             res.json({status:'error'})
         }
 
 
-        createOperationInUser(userId, concept, amount, date, type)
+        createOperationInUser(userId, concept, amount, type)
             .then(user =>{
                 if(!user){
                     return res.send({status:'error'})
                 }
                 return User.findOne({_id:userId})
-                    .then(user=>{
-                        return res.send({status:'ok', user})
+                    .populate({
+                        path: 'movements'
                     })
+                        .then(user=>{
+
+                            movementsFiltered = []
+
+                            user.movements.map(operation =>{
+                                filteredOperation = {
+                                    concept: operation.concept,
+                                    amount: operation.amount,
+                                    type: operation.type,
+                                    createdAt: operation.createdAt
+                                }
+                                movementsFiltered.push(filteredOperation)
+                            })
+
+                            var userFiltered = {
+                                _id: user._id,
+                                email: user.email,
+                                movements: movementsFiltered,
+                                role: user.role
+                            }
+                            return res.send({status:'ok', user:JSON.stringify(userFiltered)})
+                        })
             })
                 .catch(err=>{
                     return res.send({status:'error'})
@@ -29,8 +54,8 @@ module.exports = {
     }
 }
 
-async function createOperationInUser(userId, concept, amount, date, type) {
-    let newOperation = new Operation({concept, amount, date, type, owner: userId})
+async function createOperationInUser(userId, concept, amount, type) {
+    let newOperation = new Operation({concept, amount, type, owner: userId})
     await newOperation.save()
 
     return User.findByIdAndUpdate({ _id: userId }, { $push: { movements: newOperation._id } })
