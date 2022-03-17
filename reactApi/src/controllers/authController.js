@@ -8,7 +8,6 @@ module.exports = {
         var { email, password } = req.body;
         email = email.toLowerCase()
 
-        console.log('llego a la api')
 
         if (!email || !password) {
             return res.status(404).json({
@@ -33,6 +32,7 @@ module.exports = {
                             return res.header("auth-token", token)
                                 .json({
                                     status: 'ok',
+                                    user,
                                     token,
                                 });
                         })
@@ -43,10 +43,6 @@ module.exports = {
     register: async(req, res) => {
         try {
             const { email, password } = req.body;
-            var created;
-
-            console.log('llego a la api register')
-
 
             if (!email || !password) {
                 return res.status(404).json({
@@ -120,6 +116,6 @@ async function createUser(user) {
 
 async function signToken(user) {
     var token;
-    token = await jwt.sign({ user: user.email, id: user._id }, process.env.TOKEN_SECRET)
+    token = await jwt.sign({ user }, process.env.TOKEN_SECRET)
     return token
 }

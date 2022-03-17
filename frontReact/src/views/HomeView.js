@@ -1,15 +1,40 @@
-import React from 'react'
+import React, { Component } from "react";
+import AuthService from "../services/AuthService";
+import { Redirect } from "react-router-dom";
 
-import { Navbar } from '../components/Navbar'
-import '../assets/css/all.css'
+import Navbar from '../components/Navbar'
 
-export default function Contenido() {
+export default class HomeView extends Component {
+    constructor(props) {
+      super(props);
+  
+      this.state = {
+        redirect: null,
+        userReady: false,
+        currentUser: { username: "" }
+      };
+    }
+  
+    componentDidMount() {
+      const currentUser = AuthService.getCurrentUser();
+  
+      if (!currentUser) this.setState({ redirect: "/login" });
+      this.setState({ currentUser: currentUser, userReady: true })
+    }
 
-    return (
-        <>
-            <Navbar />
-            <div>
-
+    render() {
+        if (this.state.redirect) {
+          return <Redirect to={this.state.redirect} />
+        }
+    
+        const { currentUser } = this.state;
+    
+        return (
+            <>
+                <Navbar />
+            {(this.state.userReady) ?
+                <div>
+                    {JSON.stringify(currentUser)}
                 <section className='balance'>
                     <h1>Balance</h1>
                     <div>
@@ -46,6 +71,9 @@ export default function Contenido() {
                 </section>
 
             </div>
+            : null}
+            
         </>
-    )
+        )
+    }
 }

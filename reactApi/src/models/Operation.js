@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const Operation = new mongoose.Schema({
-    concept: Number,
+    concept: String,
     amount: String,
     date: String,
     type: String,

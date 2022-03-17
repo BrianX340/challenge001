@@ -1,56 +1,80 @@
-import React, { useState } from 'react'
-import  { Redirect } from 'react-router-dom'
-import { useForm } from "react-hook-form";
-import axios from 'axios';
+import React, { Component } from 'react'
+import AuthService from "../services/AuthService";
 
-export default function Contenido() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [registered, setRegistered] = useState(0);
+export default class Register extends Component {
+    constructor(props) {
+        super(props);
+        this.handleRegister = this.handleRegister.bind(this);
+        this.onChangeEmail = this.onChangeEmail.bind(this);
+        this.onChangePassword = this.onChangePassword.bind(this);
+        this.onChangeRePassword = this.onChangeRePassword.bind(this);
+    
+        this.state = {
+          email: "",
+          password: "",
+          repassword: "",
+          successful: false,
+        };
+      }
 
+      onChangeEmail(e) {
+        this.setState({
+          email: e.target.value
+        });
+      }
+    
+      onChangePassword(e) {
+        this.setState({
+          password: e.target.value
+        });
+      }    
 
-    const onSubmit = data => {
-        const { email, password, repassword } = data;
-        if(password !== repassword){
-            return
-        }
-        return axios({
-            method: 'post',
-            url: `http://localhost:3001/register`,
-            data: {
-                email,
-                password
+      onChangeRePassword(e) {
+        this.setState({
+          repassword: e.target.value
+        });
+      }  
+
+      handleRegister(e) {
+        e.preventDefault();
+
+        AuthService.register(this.state.email, this.state.password)
+        .then(sucess=>{
+            if(!sucess){
+                return false
             }
+            this.props.history.push("/login");
+            window.location.reload();
         })
-            .then((res) => {
-                const { status } = res.data;
-                status === 'ok' ? setRegistered(1) : setRegistered(2)
-            })
-            .catch( (error) =>{
-                console.log(error);
-            })
-    }
+      }
 
-    if (registered===1){
-        return <Redirect to='/login'/>
-    }
-
-    return (
-        <>
+      render() {
+        return (
+            <>
             <section className="container-form">
                 <div className="container">
                     <div className="user singinBox">
                         <div className="formBx">
-                            <form onSubmit={handleSubmit(onSubmit)}>
+                            <form onSubmit={this.handleRegister}>
                                 <h2>Registrarse</h2>
 
-                                <input placeholder='Email' type="email" {...register("email", { required: true, maxLength: 30 })} />
-                                {errors.email ? <small class="text-danger">Debe ingresar un correo</small> : ''}
+                                <input
+                                    onChange={this.onChangeEmail}
+                                    placeholder='Email'
+                                    type="email"
+                                />
 
-                                <input id="input-password" placeholder='Password' type="password" {...register("password", { required: true, maxLength: 30 })} />
-                                {errors.password ? <small class="text-danger">Contraseña</small> : ''}
+                                <input
+                                    onChange={this.onChangePassword}
+                                    placeholder='Password'
+                                    type="password"
+                                />
 
-                                <input id="input-password" placeholder='Repita Password' type="password" {...register("repassword", { required: true, maxLength: 30 })} />
-                                {errors.password ? <small class="text-danger">Repita contraseña</small> : ''}
+                                <input
+                                    onChange={this.onChangeRePassword}
+                                    placeholder='Repita Password'
+                                    type="password"
+                                />
 
                                 <input type="submit" value="Registrarme" />
                                 <p className="signup">¿Tienes cuenta? <a href="/login">
@@ -63,5 +87,6 @@ export default function Contenido() {
                 </div>
             </section>
         </>
-    )
-}
+        )}
+    
+    }

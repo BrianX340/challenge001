@@ -7,7 +7,6 @@ const mongoose = require('mongoose')
 
 try {
     var URI;
-
     URI = process.env.LOCAL_MONGO == 'true' ? process.env.MONGO_URI_LOCAL : process.env.MONGO_URI_CLOUD;
     mongoose.connect(URI, { useNewUrlParser: true, useUnifiedTopology: true })
 } catch (err) {
