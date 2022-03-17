@@ -58,7 +58,6 @@ export default function MovimientosView() {
     const chargeOperation = () => {
         UserCrudService.createOperation(concept, amount, date, type)
             .then((created) => {
-                console.log(created,'sssssssssss')
                 if (!created) {
                     return
                 }
