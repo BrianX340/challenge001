@@ -41,7 +41,8 @@ module.exports = {
                                 _id: user._id,
                                 email: user.email,
                                 movements: movementsFiltered,
-                                role: user.role
+                                role: user.role,
+                                token: req.body.token
                             }
                             return res.send({status:'ok', user:JSON.stringify(userFiltered)})
                         })

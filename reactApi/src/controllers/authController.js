@@ -60,7 +60,7 @@ module.exports = {
                                     return res.header("auth-token", token)
                                         .json({
                                             status: 'ok',
-                                            user:userFiltered,
+                                            user:JSON.stringify(userFiltered),
                                         });
                                     })
                             })
