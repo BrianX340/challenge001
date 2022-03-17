@@ -14,6 +14,8 @@ export default function MovimientosView(){
     const [concept, setConcept] = useState(0);
     const [amount, setAmount] = useState(0);
     const [type, setType] = useState('deposit');
+    const [showDeleteConfirm, setShowDeletePopUp] = useState(0);
+    const [targetOperation, setTargetOperation] = useState(0);
 
     const processData = () => {
         var currentUser = AuthService.getCurrentUser();
@@ -54,6 +56,16 @@ export default function MovimientosView(){
             });
     }
 
+    const showPopupDelete = (e) => {
+        console.log(e)
+        setTargetOperation(e.target.id)
+        setShowDeletePopUp(1)
+    }
+
+    const deleteOperation = () => {
+        console.log(targetOperation)
+    }
+
     if (redirect) {
         return <Redirect to="/login" />
     }
@@ -90,6 +102,7 @@ export default function MovimientosView(){
                                             <th>Fecha</th>
                                             <th>Tipo</th>
                                             <th></th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,7 +113,22 @@ export default function MovimientosView(){
                                                         <td>{operation.amount}</td>
                                                         <td>{operation.createdAt}</td>
                                                         <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
-                                                        <td>Modificar</td>
+                                                        <td>
+                                                            <button className="button is-primary is-outlined">
+                                                                <span>Modificar</span>
+                                                                <span className="icon is-small">
+                                                                <i className="fas fa-edit"></i>
+                                                                </span>
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button className="button is-danger is-outlined" id={operation} onClick={showPopupDelete}>
+                                                                <span>Eliminar</span>
+                                                                <span className="icon is-small">
+                                                                <i className="fas fa-times"></i>
+                                                                </span>
+                                                            </button>
+                                                        </td>
                                                     </tr>
                                         })
                                     }
@@ -183,6 +211,22 @@ export default function MovimientosView(){
                     </footer>
                 </div>
             </form>
+
+            <div className={showDeleteConfirm ? 'chargeActive popup-in' : 'chargeInactive popup-out' }>
+                <div className="modal-background"></div>
+                <div className="modal-card">
+                    <header className="modal-card-head">
+                    <button className="delete" aria-label="close" onClick={()=> setShowDeletePopUp(!showDeleteConfirm)}></button>
+                    </header>
+                    <section className="modal-card-body">
+                        <span>Desea eliminar esta operacion?</span>
+                    </section>
+                    <footer className="modal-card-foot">
+                    <button className="button is-danger" onClick={()=> deleteOperation()}>Eliminar</button>
+                    <button className="button" onClick={()=> setShowDeletePopUp(!showDeleteConfirm)}>Cancelar</button>
+                    </footer>
+                </div>
+                </div>
 
         </>
         : null}
