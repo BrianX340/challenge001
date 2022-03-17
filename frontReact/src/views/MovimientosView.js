@@ -12,10 +12,8 @@ export default class MovimientosView extends Component {
     constructor(props) {
         super(props);
         this.togglePopup = this.togglePopup.bind(this);
-        this.toogleHidePopUp = this.toogleHidePopUp.bind(this);
         this.onChangeConcept = this.onChangeConcept.bind(this);
         this.onChangeAmount = this.onChangeAmount.bind(this);
-        this.onChangeDate = this.onChangeDate.bind(this);
         this.onChangeType = this.onChangeType.bind(this);
         this.chargeOperation = this.chargeOperation.bind(this);
 
@@ -27,24 +25,16 @@ export default class MovimientosView extends Component {
             currentUser: { username: "" },
             concept: "",
             amount: "",
-            date: "",
-            type: ""
+            type: "deposit"
           };
     }
 
-    togglePopup = () => {
+    togglePopup(e) {
+        e.preventDefault()
         this.setState({
             showChargePopup: !this.state.showChargePopup
         });
     };
-
-    toogleShowPopUp(){
-        this.setState({showChargePopup:true})
-    }
-
-    toogleHidePopUp(){
-        this.setState({showChargePopup:false})
-    }
 
     onChangeConcept(e) {
         e.preventDefault()
@@ -54,18 +44,14 @@ export default class MovimientosView extends Component {
     }
 
     onChangeAmount(e) {
+        e.preventDefault()
         this.setState({
             amount: e.target.value
         });
     }
 
-    onChangeDate(e) {
-        this.setState({
-            date: e.target.value
-        });
-    }
-
     onChangeType(e) {
+        e.preventDefault()
         this.setState({
             type: e.target.value
         });
@@ -73,12 +59,11 @@ export default class MovimientosView extends Component {
 
     chargeOperation(e) {
         e.preventDefault();
-        UserCrudService.createOperation(this.state.concept, this.state.amount, this.state.date, this.state.type)
+        UserCrudService.createOperation(this.state.concept, this.state.amount, this.state.type)
             .then((created) => {
                 if (!created) {
                     return
                 }
-                this.props.history.push("/");
                 window.location.reload();
             });
     }
@@ -103,68 +88,122 @@ export default class MovimientosView extends Component {
             {(this.state.userReady) ?
                 <>    
                 <section className='chargeButtonContainer'>
-                    <button onClick={this.togglePopup}>Cargar Movimiento...</button>
+                    <button className="button is-success" onClick={this.togglePopup}>Cargar Movimiento...</button>
                 </section>
     
-                <section className='transacciones-moves'>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Concepto</th>
-                                <th>Monto</th>
-                                <th>Fecha</th>
-                                <th>Tipo</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>venta auto</td>
-                                <td>250</td>
-                                <td>22/05/1992</td>
-                                <td>Ingreso</td>
-                                <td><button>Editar</button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </section>
+                <main className="section">
 
-                <section id='popupCharge' className={this.state.showChargePopup ? 'chargeActive popup-in' : 'chargeInactive popup-out' }>
-                    <span className='closePopupButton' onClick={this.togglePopup} href="">CERRAR</span>
-                    <div className='inputsContainerPopup'>
+                    <div className="container is-fluid box" id="tableTransactions">
 
-                    <div>
-                        <label htmlFor="">Concepto</label>
-                        <input
-                            onChange={this.onChangeConcept}
-                            type="text"
-                            />
-                    </div>
-                    <div>
-                        <label htmlFor="">Monto</label>
-                        <input
-                            onChange={this.onChangeAmount}
-                            type="text"
-                            />
-                    </div>
-                    <div>
-                        <label htmlFor="">Fecha</label>
-                        <input
-                            onChange={this.onChangeDate}
-                            type="text"
-                            />
-                    </div>
-                    <div>
-                        <label htmlFor="">Tipo</label>
-                        <input
-                            onChange={this.onChangeType}
-                            type="text"
-                            />
+                        <div id="tabs-with-content">
+
+                            <div className="tabs is-centered my-4">
+                                <ul>
+                                    <li className="is-size-5 mb-3">Movimientos</li>
+                                </ul>
+                            </div>
+
+                            <div>
+
+                                <section className="tab-content table-container has-text-centered">
+                                    <table className="table is-striped is-narrow is-hoverable is-fullwidth">
+                                        <thead>
+                                            <tr>
+                                                <th>Concepto</th>
+                                                <th>Monto</th>
+                                                <th>Fecha</th>
+                                                <th>Tipo</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>venta auto</td>
+                                                <td>250</td>
+                                                <td>22/05/1992</td>
+                                                <td>Ingreso</td>
+                                                <td>Modificar</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </section>
+                            
+                            </div>
+                        </div>
                     </div>
 
+                </main>
+
+                <form className={this.state.showChargePopup ? 'chargeActive popup-in' : 'chargeInactive popup-out' }>
+                    <div></div>
+                    <div className="modal-card">
+                        <header className="modal-card-head">
+                            <p className="modal-card-title has-text-centered">Cargar movimiento</p>
+                            <span onClick={this.togglePopup} className="delete" aria-label="close"></span>
+                        </header>
+
+                        <section className="modal-card-body" id="sellDetailTemplateContainer">
+
+                            <div className="field is-horizontal">
+                                <div className="field-label is-small">
+                                    <label className="label">Concepto:</label>
+                                </div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            <input
+                                                className="input is-small"
+                                                onChange={this.onChangeConcept}
+                                                type="text"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="field is-horizontal">
+                                <div className="field-label is-small">
+                                    <label className="label">Monto:</label>
+                                </div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            <input
+                                                className="input is-small"
+                                                onChange={this.onChangeAmount}
+                                                type="text"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="field is-horizontal">
+                                <div className="field-label is-small">
+                                    <label className="label">Tipo:</label>
+                                </div>
+                                <div className="field-body">
+                                    <div className="field">
+                                        <div className="control">
+                                            <select value={this.state.type} onChange={this.onChangeType}>
+											    <option value="deposit">INGRESO</option>
+                                                <option value="retirement">RETIRO</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </section>
+
+
+                        <footer className="modal-card-foot">
+                            <span className="button" onClick={this.chargeOperation}>Cargar operacion</span>
+                            <span className="button" onClick={this.togglePopup}>Volver</span>
+                        </footer>
                     </div>
-                    <button onClick={this.chargeOperation} >cargar</button>
-                </section>
+                </form>
+
             </>
             : null}
             

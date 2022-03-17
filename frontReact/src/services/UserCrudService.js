@@ -1,7 +1,7 @@
 import axios from "axios";
 const API_URL = "http://localhost:3001/";
 class UserCrudService {
-  createOperation(concept, amount, date, type) {
+  createOperation(concept, amount, type) {
     return axios({
       method: 'post',
       url: `http://localhost:3001/user/createOperation`,
@@ -9,7 +9,6 @@ class UserCrudService {
       data: {
           concept,
           amount,
-          date,
           type,
           token: JSON.parse(localStorage.getItem('user')).token
       }
@@ -17,7 +16,6 @@ class UserCrudService {
       .then((res) => {
           const { status, user } = res.data;
           if(status === 'ok'){
-            console.log(res.data)
             localStorage.setItem("user", JSON.stringify(user));
             return true
           }

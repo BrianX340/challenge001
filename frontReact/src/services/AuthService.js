@@ -14,7 +14,7 @@ class AuthService {
       .then((res) => {
           const { status } = res.data;
           if(status === 'ok'){
-            localStorage.setItem("user", JSON.stringify(res.data));
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             return true
           }
           return false

@@ -26,14 +26,7 @@
 .chargeButtonContainer {
     display: flex;
     justify-content: center;
-}
-
-.transacciones-moves {
-    display: flex;
-    flex-direction: column;
-    width: 600px;
-    margin: auto;
-    margin-top: 20px;
+    margin-top: 30px;
 }
 
 .chargeActive {
@@ -68,6 +61,11 @@
     display: flex;
     flex-direction: column;
 }
+
+.auto-margin {
+    margin:auto;
+}
+
 
 
 /* ANIMATION */
