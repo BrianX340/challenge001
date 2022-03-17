@@ -14,7 +14,7 @@ class AuthService {
       .then((res) => {
           const { status } = res.data;
           if(status === 'ok'){
-            localStorage.setItem("user", JSON.stringify(res.data.user));
+            localStorage.setItem("user", res.data.user);
             return true
           }
           return false
@@ -44,7 +44,7 @@ class AuthService {
       })
   }
   getCurrentUser() {
-    return JSON.parse(localStorage.getItem('user'));;
+    return localStorage.getItem('user');
   }
 }
 export default new AuthService();

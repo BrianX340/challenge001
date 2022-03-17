@@ -45,7 +45,7 @@ export default class Login extends Component {
     render() {
         return (
             <>
-            <section className="hero is-primary is-fullheight">
+            <section className="hero is-fullheight">
                 <div className="hero-body">
                     <div className="container">
                     <div className="columns is-centered">
@@ -70,6 +70,9 @@ export default class Login extends Component {
                             </div>
                             </div>
                             <div className="field">
+                            <a href="/register"  className="button is-success">
+                                Registrarme
+                            </a>
                             <button type='submit' className="button is-success">
                                 Iniciar Sesion
                             </button>

@@ -16,7 +16,7 @@ class UserCrudService {
       .then((res) => {
           const { status, user } = res.data;
           if(status === 'ok'){
-            localStorage.setItem("user", JSON.stringify(user));
+            localStorage.setItem("user", user);
             return true
           }
           return false
