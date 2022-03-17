@@ -4,5 +4,6 @@ LOCAL_MONGO = false
 MONGO_URI_CLOUD = {{URI}}
 
 **front && api**
+
 npm install
 npm start
