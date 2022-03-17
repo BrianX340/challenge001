@@ -17,12 +17,9 @@ module.exports = {
 
         createOperationInUser(userId, concept, amount, date, type)
             .then(user => {
-                console.log(user)
                 if (user) {
-                    console.log('s')
                     return makePoPulateUserData(userId, token)
                         .then(user=>{
-                            console.log('asd')
                             return res.send({ status: 'ok', user })
                         })
                 }
@@ -44,10 +41,25 @@ module.exports = {
 
         await foundUser.save();
 
-        return makePoPulateUserData(userId, token, (user)=>{
-            console.log('wwwwwwwwwwwwwwwwwwww')
-            return res.json({status:'ok', user});
-        })
+        return makePoPulateUserData(userId, token)
+            .then(user=>{
+                return res.send({ status: 'ok', user })
+            })
+
+    },
+    updateOperation: async (req,res) => {
+        const { operationId, modifyConcept, modifyAmount, modifyDate, token } = req.body
+        const userId = req.user._id
+        return Operation.findOneAndUpdate({ _id: operationId }, { $set: { concept: modifyConcept, amount: modifyAmount, date: modifyDate } }, { upsert: true })
+            .then(user => {
+                if (!user) {
+                    return res.send({ 'status': 'error', 'msg': 'unexpected' })
+                }
+                return makePoPulateUserData(userId, token)
+                            .then(user=>{
+                                return res.send({ status: 'ok', user })
+                            })
+            })
     }
 }
 
@@ -65,15 +77,12 @@ async function createOperationInUser(userId, concept, amount, date, type) {
         })
 }
 
-async function makePoPulateUserData(userId,token,callback){
-    console.log('11111111111111111')
+async function makePoPulateUserData(userId,token){
     return User.findOne({ _id: userId })
                     .populate({
                         path: 'movements'
                     })
                     .then(user => {
-                        console.log('122222222222221111111111111111')
-
                         movementsFiltered = []
 
                         user.movements.map(operation => {
@@ -95,11 +104,10 @@ async function makePoPulateUserData(userId,token,callback){
                             role: user.role,
                             token
                         }
-                        console.log('55666666666666666')
 
-                        callback(JSON.stringify(userFiltered))
+                        return JSON.stringify(userFiltered)
                     })
                     .catch(err=>{
-                        console.log(err,'eroorororor')
+                        console.log(err)
                     })
 }
