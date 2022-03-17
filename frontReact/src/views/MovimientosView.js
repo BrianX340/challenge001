@@ -89,6 +89,7 @@ export default function MovimientosView(){
                                             <th>Monto</th>
                                             <th>Fecha</th>
                                             <th>Tipo</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -99,6 +100,7 @@ export default function MovimientosView(){
                                                         <td>{operation.amount}</td>
                                                         <td>{operation.createdAt}</td>
                                                         <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
+                                                        <td>Modificar</td>
                                                     </tr>
                                         })
                                     }

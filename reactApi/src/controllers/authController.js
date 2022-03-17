@@ -35,6 +35,7 @@ module.exports = {
 
                                 user.movements.map(operation =>{
                                     filteredOperation = {
+                                        _id: operation._id,
                                         concept: operation.concept,
                                         amount: operation.amount,
                                         type: operation.type,

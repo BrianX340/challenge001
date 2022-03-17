@@ -107,7 +107,6 @@ export default function HomeView(){
                                                         <td>{operation.amount}</td>
                                                         <td>{operation.createdAt}</td>
                                                         <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
-                                                        <td>Modificar</td>
                                                     </tr>
                                         })
                                     }
