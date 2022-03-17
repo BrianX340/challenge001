@@ -32,3 +32,5 @@ class App extends Component {
 }
 
 export default App;
+
+//export NODE_OPTIONS=--openssl-legacy-provider

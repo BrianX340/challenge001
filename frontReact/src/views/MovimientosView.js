@@ -57,12 +57,20 @@ export default function MovimientosView(){
     }
 
     const showPopupDelete = (idOperation) => {
+        console.log(idOperation)
         setTargetOperation(idOperation)
         setShowDeletePopUp(1)
     }
 
     const deleteOperation = () => {
-        console.log(targetOperation)
+        UserCrudService.deleteOperation(targetOperation)
+            .then((deleted) => {
+                if (!deleted) {
+                    return
+                }
+                setShowDeletePopUp(0)
+                window.location.reload();
+            });
     }
 
     if (redirect) {
@@ -205,13 +213,13 @@ export default function MovimientosView(){
 
 
                     <footer className="modal-card-foot">
-                        <span className="button" onClick={chargeOperation}>Cargar operacion</span>
+                        <span className="button" onClick={() => chargeOperation()}>Cargar operacion</span>
                         <span className="button" onClick={()=> setShowChargePopup(!showChargePopup)}>Volver</span>
                     </footer>
                 </div>
             </form>
 
-            <div className={showDeleteConfirm ? 'chargeActive popup-in' : 'chargeInactive popup-out' }>
+            <div className={showDeleteConfirm ? 'popup-in' : 'modal popup-out' }>
                 <div className="modal-background"></div>
                 <div className="modal-card">
                     <header className="modal-card-head">

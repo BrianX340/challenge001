@@ -14,7 +14,13 @@ export default function HomeView(){
     const processData = () => {
         var currentUser = AuthService.getCurrentUser();
         setCurrentUser(currentUser)
-        setUserReady(true)
+        if(!currentUser){
+            setUserReady(false)
+            setRedirect(true)
+            return
+        } else {
+            setUserReady(true)
+        }
 
         var totalDeposit = 0;
         var totalRetired = 0;
@@ -39,9 +45,7 @@ export default function HomeView(){
 
     useEffect(() => {
 
-        if(userReady){
-            return
-        }else{
+        if(!userReady){
             processData()
         }
       },[]);
