@@ -56,9 +56,8 @@ export default function MovimientosView(){
             });
     }
 
-    const showPopupDelete = (e) => {
-        console.log(e)
-        setTargetOperation(e.target.id)
+    const showPopupDelete = (idOperation) => {
+        setTargetOperation(idOperation)
         setShowDeletePopUp(1)
     }
 
@@ -122,7 +121,7 @@ export default function MovimientosView(){
                                                             </button>
                                                         </td>
                                                         <td>
-                                                            <button className="button is-danger is-outlined" id={operation} onClick={showPopupDelete}>
+                                                            <button className="button is-danger is-outlined"  onClick={()=>showPopupDelete(operation._id)}>
                                                                 <span>Eliminar</span>
                                                                 <span className="icon is-small">
                                                                 <i className="fas fa-times"></i>
