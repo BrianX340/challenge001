@@ -101,7 +101,7 @@ export default function HomeView(){
                                 </thead>
                                 <tbody>
                                     {
-                                        JSON.parse(currentUser)['movements'].map(operation=>{
+                                        JSON.parse(currentUser)['movements'].reverse().slice(0,10).map(operation=>{
                                             return  <tr>
                                                         <td>{operation.concept}</td>
                                                         <td>{operation.amount}</td>
