@@ -109,7 +109,7 @@ export default function HomeView(){
                                             return  <tr>
                                                         <td>{operation.concept}</td>
                                                         <td>{operation.amount}</td>
-                                                        <td>{operation.createdAt}</td>
+                                                        <td>{operation.date}</td>
                                                         <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
                                                     </tr>
                                         })
