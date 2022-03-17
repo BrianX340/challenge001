@@ -33,12 +33,13 @@ module.exports = {
 
                                 movementsFiltered = []
 
-                                user.movements.map(operation =>{
+                                user.movements.map(operation => {
                                     filteredOperation = {
                                         _id: operation._id,
                                         concept: operation.concept,
                                         amount: operation.amount,
                                         type: operation.type,
+                                        date: JSON.stringify(operation.date).slice(1,11),
                                         createdAt: operation.createdAt
                                     }
                                     movementsFiltered.push(filteredOperation)

@@ -4,10 +4,10 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
     createOperation: (req, res) => {
-        var { concept, amount, type, token } = req.body
+        var { concept, amount, date, type, token } = req.body
         const userId = req.user._id
 
-        if (!concept || !amount || !type || isNaN(amount)) {
+        if (!concept || !amount || !date || !type || isNaN(amount)) {
             return res.json({ status: 'error' })
         }
         if (type != 'deposit' && type != 'retirement') {
@@ -15,15 +15,19 @@ module.exports = {
         }
 
 
-        createOperationInUser(userId, concept, amount, type)
+        createOperationInUser(userId, concept, amount, date, type)
             .then(user => {
-                if (!user) {
-                    return res.send({ status: 'error' })
+                console.log(user)
+                if (user) {
+                    console.log('s')
+                    return makePoPulateUserData(userId, token)
+                        .then(user=>{
+                            console.log('asd')
+                            return res.send({ status: 'ok', user })
+                        })
                 }
-                return makePoPulateUserData(userId, token)
-                    .then(user=>{
-                        return res.send({ status: 'ok', user })
-                    })                    
+                return res.send({ status: 'error' })
+                                    
             })
             .catch(err => {
                 return res.send({ status: 'error' })
@@ -40,15 +44,15 @@ module.exports = {
 
         await foundUser.save();
 
-        return makePoPulateUserData(userId, token)
-            .then(user=>{
-                return res.json({status:'ok', user});
-            })
+        return makePoPulateUserData(userId, token, (user)=>{
+            console.log('wwwwwwwwwwwwwwwwwwww')
+            return res.json({status:'ok', user});
+        })
     }
 }
 
-async function createOperationInUser(userId, concept, amount, type) {
-    let newOperation = new Operation({ concept, amount, type, owner: userId })
+async function createOperationInUser(userId, concept, amount, date, type) {
+    let newOperation = new Operation({ concept, amount, date, type, owner: userId })
     await newOperation.save()
 
     return User.findByIdAndUpdate({ _id: userId }, { $push: { movements: newOperation._id } })
@@ -61,12 +65,14 @@ async function createOperationInUser(userId, concept, amount, type) {
         })
 }
 
-async function makePoPulateUserData(userId,token){
+async function makePoPulateUserData(userId,token,callback){
+    console.log('11111111111111111')
     return User.findOne({ _id: userId })
                     .populate({
                         path: 'movements'
                     })
                     .then(user => {
+                        console.log('122222222222221111111111111111')
 
                         movementsFiltered = []
 
@@ -76,6 +82,7 @@ async function makePoPulateUserData(userId,token){
                                 concept: operation.concept,
                                 amount: operation.amount,
                                 type: operation.type,
+                                date: JSON.stringify(operation.date).slice(1,11),
                                 createdAt: operation.createdAt
                             }
                             movementsFiltered.push(filteredOperation)
@@ -88,6 +95,11 @@ async function makePoPulateUserData(userId,token){
                             role: user.role,
                             token
                         }
-                        return JSON.stringify(userFiltered)
+                        console.log('55666666666666666')
+
+                        callback(JSON.stringify(userFiltered))
+                    })
+                    .catch(err=>{
+                        console.log(err,'eroorororor')
                     })
 }
