@@ -11,6 +11,7 @@ import './assets/css/all.css'
 import HomeView from './views/HomeView'
 import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
+import LogoutView from './views/LogoutView'
 import MovimientosView from './views/MovimientosView'
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
               <Route exact path="/" component={HomeView} />
               <Route exact path="/login" component={LoginView} />
               <Route exact path="/register" component={RegisterView} />
+              <Route exact path="/logout" component={LogoutView} />
               <Route exact path="/movimientos" component={MovimientosView} />
           </div>
         </Router>
