@@ -4,7 +4,6 @@ import UserCrudService from "../services/UserCrudService";
 import { Redirect } from "react-router-dom";
 
 import Navbar from '../components/Navbar'
-import PopUpChargeMovement from '../components/PopUpChargeMovement'
 
 export default function MovimientosView() {
     const [redirect, setRedirect] = useState(0);
@@ -18,9 +17,9 @@ export default function MovimientosView() {
     const [showDeleteConfirm, setShowDeletePopUp] = useState(0);
     const [showModifyPopup, setShowModifyPopUp] = useState(0);
     const [targetOperation, setTargetOperation] = useState(0);
-    const [modifyConcept, setModifyConcept ] = useState('');
-    const [modifyAmount, setModifyAmount ] = useState('');
-    const [modifyDate, setModifyDate ] = useState('');
+    const [modifyConcept, setModifyConcept] = useState('');
+    const [modifyAmount, setModifyAmount] = useState('');
+    const [modifyDate, setModifyDate] = useState('');
 
     const processData = () => {
         var currentUser = AuthService.getCurrentUser();
@@ -32,11 +31,7 @@ export default function MovimientosView() {
     };
 
     useEffect(() => {
-        if (userReady) {
-            return
-        } else {
-            processData()
-        }
+        processData()
     }, []);
 
     const onChangeConcept = (e) => {
@@ -85,19 +80,19 @@ export default function MovimientosView() {
         setTargetOperation(operation)
         setModifyConcept(operation.concept)
         setModifyAmount(operation.amount)
-        setModifyDate(JSON.stringify(operation.date).slice(1,11))
+        setModifyDate(JSON.stringify(operation.date).slice(1, 11))
         setShowModifyPopUp(1)
     }
 
     const updateOperation = () => {
         UserCrudService.updateOperation(targetOperation._id, modifyConcept, modifyAmount, modifyDate)
-        .then((updated) => {
-            if (!updated) {
-                return
-            }
-            setShowModifyPopUp(0)
-            window.location.reload();
-        });
+            .then((updated) => {
+                if (!updated) {
+                    return
+                }
+                setShowModifyPopUp(0)
+                window.location.reload();
+            });
     }
 
     const onModifyChangeConcept = (concept) => {
@@ -118,16 +113,12 @@ export default function MovimientosView() {
 
     return (
         <>
-            <Navbar />
             {(userReady) ?
                 <>
-                    <section className='chargeButtonContainer'>
-                        <button className="button is-success" onClick={() => setShowChargePopup(!showChargePopup)}>Cargar Movimiento...</button>
-                    </section>
+                    <Navbar />
+                    <main className="column">
 
-                    <main className="section">
-
-                        <div className="container is-fluid box" id="tableTransactions">
+                        <div className="column is-8 has-background-white m-auto" id="tableTransactions">
 
                             <div id="tabs-with-content">
 
@@ -137,10 +128,10 @@ export default function MovimientosView() {
                                     </ul>
                                 </div>
 
-                                <div>
+                                <div id='tableMoves'>
 
-                                    <section className="tab-content table-container has-text-centered">
-                                        <table className="table is-striped is-narrow is-hoverable is-fullwidth">
+                                    <section className="tab-content table-container has-text-centered hero is-halfheight">
+                                        <table className="table is-scrollable">
                                             <thead>
                                                 <tr>
                                                     <th>Concepto</th>
@@ -157,7 +148,7 @@ export default function MovimientosView() {
                                                         return <tr>
                                                             <td>{operation.concept}</td>
                                                             <td>{operation.amount}</td>
-                                                            <td>{JSON.stringify(operation.date).slice(1,11)}</td>
+                                                            <td>{JSON.stringify(operation.date).slice(1, 11)}</td>
                                                             <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
                                                             <td>
                                                                 <button className="button is-primary is-outlined" onClick={() => showPopupModify(operation)}>
@@ -186,6 +177,10 @@ export default function MovimientosView() {
                             </div>
                         </div>
 
+                        <section className='chargeButtonContainer'>
+                            <button className="button is-success" onClick={() => setShowChargePopup(!showChargePopup)}>Cargar Movimiento...</button>
+                        </section>
+
                     </main>
 
                     <form className={showChargePopup ? 'modal viewww chargeActive popup-in' : 'chargeInactive popup-out'}>
@@ -206,7 +201,7 @@ export default function MovimientosView() {
                                         <div className="field">
                                             <div className="control">
                                                 <input
-                                                    className="input is-small"
+                                                    className="input is-success"
                                                     onChange={onChangeConcept}
                                                     type="text"
                                                 />
@@ -223,7 +218,7 @@ export default function MovimientosView() {
                                         <div className="field">
                                             <div className="control">
                                                 <input
-                                                    className="input is-small"
+                                                    className="input is-success"
                                                     onChange={onChangeAmount}
                                                     type="number"
                                                 />
@@ -240,7 +235,7 @@ export default function MovimientosView() {
                                         <div className="field">
                                             <div className="control">
                                                 <input
-                                                    className="input is-small"
+                                                    className="input is-success"
                                                     onChange={onChangeDate}
                                                     type="date"
                                                 />
@@ -254,9 +249,9 @@ export default function MovimientosView() {
                                         <label className="label">Tipo:</label>
                                     </div>
                                     <div className="field-body">
-                                        <div className="field">
-                                            <div className="control">
-                                                <select value={type} onChange={onChangeType}>
+                                        <div className="control">
+                                            <div className="select">
+                                                <select value={type} className='select' onChange={onChangeType}>
                                                     <option value="deposit">INGRESO</option>
                                                     <option value="retirement">RETIRO</option>
                                                 </select>
@@ -302,37 +297,19 @@ export default function MovimientosView() {
                                 <div className="field">
                                     <label className="label">Concepto</label>
                                     <div className="control has-icons-left has-icons-right">
-                                        <input className="input is-success" type="text" placeholder="Text input" value={ modifyConcept } onChange={e => onModifyChangeConcept(e.target.value)}/>
-                                            <span className="icon is-small is-left">
-                                                <i className="fas fa-user"></i>
-                                            </span>
-                                            <span className="icon is-small is-right">
-                                                <i className="fas fa-check"></i>
-                                            </span>
+                                        <input className="input is-success" type="text" placeholder="Text input" value={modifyConcept} onChange={e => onModifyChangeConcept(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="field">
                                     <label className="label">Monto</label>
                                     <div className="control has-icons-left has-icons-right">
-                                        <input className="input is-success" type="number" placeholder="Text input" value={ modifyAmount } onChange={e => onModifyChangeAmount(e.target.value)}/>
-                                            <span className="icon is-small is-left">
-                                                <i className="fas fa-user"></i>
-                                            </span>
-                                            <span className="icon is-small is-right">
-                                                <i className="fas fa-check"></i>
-                                            </span>
+                                        <input className="input is-success" type="number" placeholder="Text input" value={modifyAmount} onChange={e => onModifyChangeAmount(e.target.value)} />
                                     </div>
                                 </div>
                                 <div className="field">
                                     <label className="label">Fecha</label>
                                     <div className="control has-icons-left has-icons-right">
-                                        <input className="input is-success" type="date" placeholder="Text input" value={ modifyDate } onChange={e => onModifyChangeDate(e.target.value)}/>
-                                            <span className="icon is-small is-left">
-                                                <i className="fas fa-user"></i>
-                                            </span>
-                                            <span className="icon is-small is-right">
-                                                <i className="fas fa-check"></i>
-                                            </span>
+                                        <input className="input is-success" type="date" placeholder="Text input" value={modifyDate} onChange={e => onModifyChangeDate(e.target.value)} />
                                     </div>
                                 </div>
                             </section>

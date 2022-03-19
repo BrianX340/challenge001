@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import {
-  BrowserRouter as Router,
-  Route
+	BrowserRouter as Router,
+	Route
 } from "react-router-dom"
 
 import './App.css'
@@ -16,21 +16,21 @@ import MovimientosView from './views/MovimientosView'
 
 class App extends Component {
 
-  render() {
-    return (
-      <>      
-        <Router>
-          <div className="App">
-              <Route exact path="/" component={HomeView} />
-              <Route exact path="/login" component={LoginView} />
-              <Route exact path="/register" component={RegisterView} />
-              <Route exact path="/logout" component={LogoutView} />
-              <Route exact path="/movimientos" component={MovimientosView} />
-          </div>
-        </Router>
-      </>
-    )
-  }
+	render() {
+		return (
+			<>
+				<Router>
+					<div className="App">
+						<Route exact path="/" component={HomeView} />
+						<Route exact path="/login" component={LoginView} />
+						<Route exact path="/register" component={RegisterView} />
+						<Route exact path="/logout" component={LogoutView} />
+						<Route exact path="/movimientos" component={MovimientosView} />
+					</div>
+				</Router>
+			</>
+		)
+	}
 }
 
 export default App;

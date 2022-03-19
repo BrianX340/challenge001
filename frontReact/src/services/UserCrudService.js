@@ -1,5 +1,4 @@
 import axios from "axios";
-const API_URL = "http://localhost:3001/";
 class UserCrudService {
 	createOperation(concept, amount, date, type) {
 		return axios({
@@ -49,7 +48,7 @@ class UserCrudService {
 				console.log(error);
 			})
 	}
-	updateOperation(operationId, modifyConcept, modifyAmount, modifyDate){
+	updateOperation(operationId, modifyConcept, modifyAmount, modifyDate) {
 		return axios({
 			method: 'post',
 			url: `http://localhost:3001/user/updateOperation`,

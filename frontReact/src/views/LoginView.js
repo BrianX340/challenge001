@@ -14,21 +14,21 @@ export default class Login extends Component {
             password: "",
             loading: false,
             message: "",
-            showLogedError:false,
+            showLogedError: false,
         };
     }
 
     onChangeEmail(e) {
         this.setState({
             email: e.target.value,
-            showLogedError:false
+            showLogedError: false
         });
     }
 
     onChangePassword(e) {
         this.setState({
             password: e.target.value,
-            showLogedError:false
+            showLogedError: false
         });
     }
 
@@ -37,7 +37,7 @@ export default class Login extends Component {
         AuthService.login(this.state.email, this.state.password)
             .then((loged) => {
                 if (!loged) {
-                    this.setState({showLogedError:true})
+                    this.setState({ showLogedError: true })
                     return
                 }
                 this.props.history.push("/");
@@ -49,53 +49,51 @@ export default class Login extends Component {
     render() {
         return (
             <>
-            <section className="hero is-fullheight">
-                <div className="hero-body">
-                    <div className="container">
-                    <div className="columns is-centered">
-                        <div className="column is-5-tablet is-4-desktop is-3-widescreen">
-                        <form onSubmit={this.handleLogin} className="box">
-                            <div className="field">
-                                <label for="" className="label">Email</label>
-                                <div className="control has-icons-left">
-                                    <input onChange={this.onChangeEmail} type="email" placeholder="asd@example.com" className="input" required/>
-                                    <span className="icon is-small is-left">
-                                    <i className="fa fa-envelope"></i>
-                                    </span>
+                <section className="hero is-fullheight">
+                    <div className="hero-body">
+                        <div className="container">
+                            <div className="columns is-centered">
+                                <div className="column is-5-tablet is-4-desktop is-3-widescreen">
+                                    <form onSubmit={this.handleLogin} className="box">
+                                        <div className="field">
+                                            <label for="" className="label">Email</label>
+                                            <div className="control has-icons-left">
+                                                <input onChange={this.onChangeEmail} type="email" placeholder="asd@example.com" className="input" required />
+                                                <span className="icon is-small is-left">
+                                                    <i className="fa fa-envelope"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="field">
+                                            <label for="" className="label">Password</label>
+                                            <div className="control has-icons-left">
+                                                <input onChange={this.onChangePassword} type="password" placeholder="*******" className="input" required />
+                                                <span className="icon is-small is-left">
+                                                    <i className="fa fa-lock"></i>
+                                                </span>
+                                            </div>
+                                            {(this.state.showLogedError) ?
+                                                <span className="help is-danger">Error email o contraseña invalidos.</span>
+                                                : ''}
+                                        </div>
+                                        <div className='buttons'>
+											<button type='submit' className="button mt-1 is-fullwidth is-primary">
+                                                Iniciar Sesion
+											</button>
+										</div>
+                                        <small>
+											<span className='has-text-centered is-block'>
+												No tienes una cuenta?
+											</span>
+											<a href="/register" className="has-text-centered is-block"> Registrarme</a>
+										</small>
+                                    </form>
                                 </div>
                             </div>
-                            <div className="field">
-                                <label for="" className="label">Password</label>
-                                <div className="control has-icons-left">
-                                    <input onChange={this.onChangePassword} type="password" placeholder="*******" className="input" required/>
-                                    <span className="icon is-small is-left">
-                                    <i className="fa fa-lock"></i>
-                                    </span>
-                                </div>
-                                {(this.state.showLogedError) ? 
-                                    <span class="help is-danger">Error email o contraseña invalidos.</span>
-                                : '' }
-                            </div>
-                            <div className="field">
-                            <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
-                                <div class="column is-justify-content-center is-flex">
-                                    <a href="/register"  className="button is-success">
-                                        Registrarme
-                                    </a>        
-                                </div>
-                                <div class="column is-justify-content-center is-flex">
-                                    <button type='submit' className="button is-success">
-                                        Iniciar Sesion
-                                    </button>
-                                </div>
-                            </div>
-                            </div>
-                        </form>
                         </div>
                     </div>
-                    </div>
-                </div>
                 </section>
-        </>
-        )}
+            </>
+        )
+    }
 }

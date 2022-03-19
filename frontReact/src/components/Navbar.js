@@ -5,50 +5,46 @@ class Navbar extends Component {
     render() {
         return (
             <>
-                <header class="container is-fluid">
-                    <nav class="navbar" role="navigation" aria-label="main navigation">
-                        <div class="navbar-brand">
-                            <a class="navbar-item" href="#">
-                                <img src="https://bulma.io/images/placeholders/720x240.png" width="112" height="28"/>
-                            </a>
-
-                            <a role="button" class="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
+                <header className="container is-fluid">
+                    <nav className="navbar" role="navigation" aria-label="main navigation">
+                        <div className="navbar-brand">
+                            <span role="button" className="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">
                                 <span aria-hidden="true"></span>
                                 <span aria-hidden="true"></span>
                                 <span aria-hidden="true"></span>
-                            </a>
+                            </span>
                         </div>
-                        <div class="navbar-menu" id="navMenu">
-                            <div class="navbar-start">
+                        <div className="navbar-menu" id="navMenu">
+                            <div className="navbar-start">
 
                             </div>
 
-                            <div class="navbar-end">
-                                <a href='/' class="navbar-item">
-                                    <span class="icon-text">
-                                        <span class="icon">
-                                            <i class="fas fa-home"></i>
+                            <div className="navbar-end">
+                                <a href='/' className="navbar-item">
+                                    <span className="icon-text">
+                                        <span className="icon">
+                                            <i className="fas fa-home"></i>
                                         </span>
                                         <span>Inicio</span>
                                     </span>
                                 </a>
 
-                                <a href='/movimientos' class="navbar-item">
-                                    <span class="icon-text">
-                                        <span class="icon">
-                                            <i class="fas fa-exchange-alt"></i>
+                                <a href='/movimientos' className="navbar-item">
+                                    <span className="icon-text">
+                                        <span className="icon">
+                                            <i className="fas fa-exchange-alt"></i>
                                         </span>
                                         <span>Movimientos</span>
                                     </span>
                                 </a>
 
-                                <div class="navbar-item">
-                                    <div class="buttons">
+                                <div className="navbar-item">
+                                    <div className="buttons">
 
-                                        <a href='/logout' class="button is-light">
+                                        <a href='/logout' className="button is-light">
                                             Cerrar sesion
-                                            <span class="icon">
-                                                <i class="fas fa-arrow-right-from-bracket"></i>
+                                            <span className="icon">
+                                                <i className="fas fa-arrow-right-from-bracket"></i>
 
                                             </span>
                                         </a>
