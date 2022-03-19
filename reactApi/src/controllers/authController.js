@@ -6,15 +6,15 @@ const User = require('../models/User')
 module.exports = {
     login: async(req, res) => {
         var { email, password } = req.body;
-        email = email.toLowerCase()
-
-
+        
+        
         if (!email || !password) {
             return res.status(404).json({
                 status: 'error',
                 errors: 'incomplete_fields',
             });
         }
+        email = email.toLowerCase()
 
         return User.findOne({ email })
                     .populate({
