@@ -6,42 +6,37 @@ import Navbar from '../components/Navbar'
 
 export default function HomeView() {
     const [redirect, setRedirect] = useState(0);
-    const [userReady, setUserReady] = useState(0);
-    const [currentUser, setCurrentUser] = useState(0);
+    const [operations, setOperations] = useState(0);
     const [totalDeposit, setTotalDeposit] = useState(0);
     const [totalRetired, setTotalRetired] = useState(0);
 
     const processData = () => {
         var currentUser = AuthService.getCurrentUser();
-        setCurrentUser(currentUser)
         if (!currentUser) {
-            setUserReady(false)
             setRedirect(true)
             return
-        } else {
-            setUserReady(true)
         }
 
+        if (typeof currentUser === 'string') {
+            currentUser = JSON.parse(currentUser)
+        }
+        processOperationData(currentUser);
+        setOperations(currentUser.movements)
+    };
+
+    const processOperationData = (currentUser) => {
         var totalDeposit = 0;
         var totalRetired = 0;
-
-        let data = currentUser
-
-        if (typeof data === 'string') {
-            data = JSON.parse(data)
-        }
-
-        data['movements'].forEach(operation => {
+        currentUser['movements'].forEach(operation => {
             if (operation.type === 'deposit') {
                 totalDeposit += operation.amount
             } else if (operation.type === 'retirement') {
                 totalRetired += operation.amount;
             }
         })
-
         setTotalDeposit(totalDeposit)
         setTotalRetired(totalRetired)
-    };
+    }
 
     useEffect(() => {
         processData()
@@ -54,76 +49,69 @@ export default function HomeView() {
     return (
         <>
             <Navbar />
-            {(userReady) ?
-                <main className="section">
-
-                    <div className="column is-half has-background-white m-auto" id="tableTransactions">
-
-                        <div id="tabs-with-content">
-
-                            <div className="tabs is-centered my-4">
-                                <ul>
-                                    <li className="is-size-5 mb-3">Balance</li>
-                                </ul>
-                            </div>
-
-                            <table className="table is-striped is-narrow is-hoverable auto-margin">
-                                <thead>
-                                    <tr>
-                                        <th className='has-text-centered'>INGRESOS</th>
-                                        <th className='has-text-centered'>RETIROS</th>
-                                        <th className='has-text-centered'>DISPONIBLE</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className='has-text-centered'>
-                                            {totalDeposit}
-                                        </td>
-                                        <td className='has-text-centered'>
-                                            {totalRetired}
-                                        </td>
-                                        <td className='has-text-centered'>
-                                            {totalDeposit - totalRetired}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                            <div>
-
-                                <section className="tab-content table-container has-text-centered">
-                                    <table className="table is-striped is-narrow is-hoverable is-fullwidth">
-                                        <thead>
-                                            <tr>
-                                                <th>Concepto</th>
-                                                <th>Monto</th>
-                                                <th>Fecha</th>
-                                                <th>Tipo</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {
-                                                JSON.parse(currentUser)['movements'].reverse().slice(0, 10).map(operation => {
-                                                    return <tr>
-                                                        <td>{operation.concept}</td>
-                                                        <td>{operation.amount}</td>
-                                                        <td>{operation.date}</td>
-                                                        <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
-                                                    </tr>
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                </section>
-
-                            </div>
+            <main className="section">
+                <div className="column is-half has-background-white m-auto" id="tableTransactions">
+                    <div id="tabs-with-content">
+                        <div className="tabs is-centered my-4">
+                            <ul>
+                                <li className="is-size-5 mb-3">Balance</li>
+                            </ul>
+                        </div>
+                        <table className="table is-striped is-narrow is-hoverable auto-margin">
+                            <thead>
+                                <tr>
+                                    <th className='has-text-centered'>INGRESOS</th>
+                                    <th className='has-text-centered'>RETIROS</th>
+                                    <th className='has-text-centered'>DISPONIBLE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td className='has-text-centered'>
+                                        {totalDeposit}
+                                    </td>
+                                    <td className='has-text-centered'>
+                                        {totalRetired}
+                                    </td>
+                                    <td className='has-text-centered'>
+                                        {totalDeposit - totalRetired}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <section className="tab-content table-container has-text-centered">
+                                <table className="table is-striped is-narrow is-hoverable is-fullwidth">
+                                    <thead>
+                                        <tr>
+                                            <th>Concepto</th>
+                                            <th>Monto</th>
+                                            <th>Fecha</th>
+                                            <th>Tipo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                            operations
+                                            ?
+                                            operations.reverse().slice(0, 10).map(operation => {
+                                                return <tr>
+                                                    <td>{operation.concept}</td>
+                                                    <td>{operation.amount}</td>
+                                                    <td>{operation.date}</td>
+                                                    <td>{operation.type === 'deposit' ? 'INGRESO' : 'RETIRO'}</td>
+                                                </tr>
+                                            })
+                                            :
+                                            ''
+                                        }
+                                    </tbody>
+                                </table>
+                            </section>
                         </div>
                     </div>
-
-                </main>
-                : null}
-
+                </div>
+            </main>
         </>
     )
 }
