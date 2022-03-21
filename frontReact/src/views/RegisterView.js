@@ -64,21 +64,19 @@ export default class Register extends Component {
 		return vEmail === vPass === vPass2
 	}
 
-	handleRegister(e) {
+	async handleRegister(e) {
 		e.preventDefault();
 
 		if(!this.validateAllRegister()){
 			this.setState({validationSubmit: true})
 			return
 		}
-		return AuthService.register(this.state.email, this.state.password)
-			.then(sucess => {
-				if (!sucess) {
-					return false
-				}
-				this.props.history.push("/login");
-				window.location.reload();
-			})
+		const sucess = await AuthService.register(this.state.email, this.state.password)
+		if (!sucess) {
+			return false
+		}
+		this.props.history.push("/login");
+		window.location.reload();
 	}
 
 	render() {

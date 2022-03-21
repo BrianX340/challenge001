@@ -32,17 +32,15 @@ export default class Login extends Component {
         });
     }
 
-    handleLogin(e) {
+    async handleLogin(e) {
         e.preventDefault();
-        AuthService.login(this.state.email, this.state.password)
-            .then((loged) => {
-                if (!loged) {
-                    this.setState({ showLogedError: true })
-                    return
-                }
-                this.props.history.push("/");
-                window.location.reload();
-            });
+        const loged = await AuthService.login(this.state.email, this.state.password)
+        if (!loged) {
+            this.setState({ showLogedError: true })
+            return
+        }
+        this.props.history.push("/");
+        window.location.reload();
     }
 
     render() {

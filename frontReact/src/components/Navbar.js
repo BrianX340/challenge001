@@ -4,7 +4,7 @@ class Navbar extends Component {
     render() {
         return (
             <>
-                <header className="container is-fluid">
+                <header className="container is-fullwidth">
                     <nav className="navbar" role="navigation" aria-label="main navigation">
                         <div className="navbar-brand">
                             <span role="button" className="navbar-burger" data-target="navMenu" aria-label="menu" aria-expanded="false">

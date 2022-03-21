@@ -50,14 +50,12 @@ export default function MovimientosView() {
         setType(e.target.value)
     }
 
-    const chargeOperation = () => {
-        UserCrudService.createOperation(concept, amount, date, type)
-            .then((created) => {
-                if (!created) {
-                    return
-                }
-                window.location.reload();
-            });
+    const chargeOperation = async () => {
+        const created = await UserCrudService.createOperation(concept, amount, date, type)
+        if (!created) {
+            return
+        }
+        window.location.reload();
     }
 
     const showPopupDelete = (operation) => {
@@ -65,15 +63,13 @@ export default function MovimientosView() {
         setShowDeletePopUp(1)
     }
 
-    const deleteOperation = () => {
-        UserCrudService.deleteOperation(targetOperation._id)
-            .then((deleted) => {
-                if (!deleted) {
-                    return
-                }
-                setShowDeletePopUp(0)
-                window.location.reload();
-            });
+    const deleteOperation = async () => {
+        const deleted = await UserCrudService.deleteOperation(targetOperation._id)
+        if (!deleted) {
+            return
+        }
+        setShowDeletePopUp(0)
+        window.location.reload();
     }
 
     const showPopupModify = (operation) => {
@@ -84,15 +80,13 @@ export default function MovimientosView() {
         setShowModifyPopUp(1)
     }
 
-    const updateOperation = () => {
-        UserCrudService.updateOperation(targetOperation._id, modifyConcept, modifyAmount, modifyDate)
-            .then((updated) => {
-                if (!updated) {
-                    return
-                }
-                setShowModifyPopUp(0)
-                window.location.reload();
-            });
+    const updateOperation = async () => {
+        const updated = await UserCrudService.updateOperation(targetOperation._id, modifyConcept, modifyAmount, modifyDate)
+        if (!updated) {
+            return
+        }
+        setShowModifyPopUp(0)
+        window.location.reload();
     }
 
     const onModifyChangeConcept = (concept) => {
@@ -177,7 +171,7 @@ export default function MovimientosView() {
                             </div>
                         </div>
 
-                        <section className='chargeButtonContainer'>
+                        <section className='buttons is-justify-content-center mt-2'>
                             <button className="button is-success" onClick={() => setShowChargePopup(!showChargePopup)}>Cargar Movimiento...</button>
                         </section>
 
