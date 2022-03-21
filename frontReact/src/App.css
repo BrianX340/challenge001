@@ -18,8 +18,13 @@ body .viewww {
 }
 
 .App > header {
-    background-color: white;
+    background-color: #12203b;
     z-index: 1;
+    box-shadow: 0 0.3125rem 0.9375rem -0.3125rem #4591c4;
+}
+
+.navbar {
+    background-color: #12203b;
 }
 
 #tableMoves {

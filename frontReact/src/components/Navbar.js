@@ -16,7 +16,7 @@ class Navbar extends Component {
                         <div className="navbar-menu" id="navMenu">
                             <div className="navbar-start"></div>
                             <div className="navbar-end">
-                                <a href='/' className="navbar-item">
+                                <a href='/' className="navbar-item has-text-white">
                                     <span className="icon-text">
                                         <span className="icon">
                                             <i className="fas fa-home"></i>
@@ -24,7 +24,7 @@ class Navbar extends Component {
                                         <span>Inicio</span>
                                     </span>
                                 </a>
-                                <a href='/movimientos' className="navbar-item">
+                                <a href='/movimientos' className="navbar-item has-text-white">
                                     <span className="icon-text">
                                         <span className="icon">
                                             <i className="fas fa-exchange-alt"></i>
@@ -34,7 +34,7 @@ class Navbar extends Component {
                                 </a>
                                 <div className="navbar-item">
                                     <div className="buttons">
-                                        <a href='/logout' className="button is-light">
+                                        <a href='/logout' className="button is-light has-text-none">
                                             Cerrar sesion
                                             <span className="icon">
                                                 <i className="fas fa-arrow-right-from-bracket"></i>

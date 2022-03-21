@@ -89,7 +89,7 @@ export default class Register extends Component {
 								<div className="column is-5-tablet is-4-desktop is-3-widescreen">
 									<form onSubmit={this.handleRegister} className="box">
 										<div className="field">
-											<label for="" className="label">Email</label>
+											<label htmlFor="" className="label">Email</label>
 											<div className="control has-icons-left">
 												<input className={this.state.emailValidation ? "input is-success" : "input is-danger"} onChange={this.onChangeEmail} type="email" placeholder="asd@example.com" required />
 												<span className="icon is-small is-left">
@@ -98,7 +98,7 @@ export default class Register extends Component {
 											</div>
 										</div>
 										<div className="field">
-											<label for="" className="label">Password</label>
+											<label htmlFor="" className="label">Password</label>
 											<div className="control has-icons-left">
 												<input className={this.state.passwordValidation ? "input is-success" : "input is-danger"} onChange={this.onChangePassword} type="password" placeholder="*******" required />
 												<span className="icon is-small is-left">
@@ -107,7 +107,7 @@ export default class Register extends Component {
 											</div>
 										</div>
 										<div className="field">
-											<label for="" className="label">Verificar Password</label>
+											<label htmlFor="" className="label">Verificar Password</label>
 											<div className="control has-icons-left">
 												<input className={this.state.repasswordValidation ? "input is-success" : "input is-danger"} onChange={this.onChangeRePassword} type="password" placeholder="*******" required />
 												<span className="icon is-small is-left">

@@ -53,7 +53,7 @@ export default class Login extends Component {
                                 <div className="column is-5-tablet is-4-desktop is-3-widescreen">
                                     <form onSubmit={this.handleLogin} className="box">
                                         <div className="field">
-                                            <label for="" className="label">Email</label>
+                                            <label htmlFor="" className="label">Email</label>
                                             <div className="control has-icons-left">
                                                 <input onChange={this.onChangeEmail} type="email" placeholder="asd@example.com" className="input" required />
                                                 <span className="icon is-small is-left">
@@ -62,7 +62,7 @@ export default class Login extends Component {
                                             </div>
                                         </div>
                                         <div className="field">
-                                            <label for="" className="label">Password</label>
+                                            <label htmlFor="" className="label">Password</label>
                                             <div className="control has-icons-left">
                                                 <input onChange={this.onChangePassword} type="password" placeholder="*******" className="input" required />
                                                 <span className="icon is-small is-left">
