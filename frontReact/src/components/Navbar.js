@@ -32,6 +32,14 @@ class Navbar extends Component {
                                         <span>Movimientos</span>
                                     </span>
                                 </a>
+                                <a href='/newPage' className="navbar-item has-text-white">
+                                    <span className="icon-text">
+                                        <span className="icon">
+                                            <i className="fas fa-exchange-alt"></i>
+                                        </span>
+                                        <span>Nueva Pagina</span>
+                                    </span>
+                                </a>
                                 <div className="navbar-item">
                                     <div className="buttons">
                                         <a href='/logout' className="button is-light has-text-none">

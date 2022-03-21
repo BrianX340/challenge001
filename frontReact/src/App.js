@@ -12,6 +12,7 @@ import LoginView from './views/LoginView'
 import RegisterView from './views/RegisterView'
 import LogoutView from './views/LogoutView'
 import MovimientosView from './views/MovimientosView'
+import NewpageView from './views/NewpageView'
 
 export default function App() {
 
@@ -24,6 +25,7 @@ export default function App() {
 					<Route exact path="/register" component={RegisterView} />
 					<Route exact path="/logout" component={LogoutView} />
 					<Route exact path="/movimientos" component={MovimientosView} />
+					<Route exact path="/newpage" component={NewpageView} />
 				</div>
 			</Router>
 		</>
