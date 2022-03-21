@@ -102,19 +102,16 @@ module.exports = {
 };
 
 async function registerUser(email, password, callback) {
+    console.log(email)
     email = email.toLowerCase()
+    await User.findOne({ email:email }) ? callback(false) : ''
 
-    return crypto.randomBytes(16, async (err, salt) => {
-        const newSalt = salt.toString('base64')
-        return crypto.pbkdf2(password, newSalt, 10000, 64, 'sha1', async (err, key) => {
-            const encryptedPass = key.toString('base64')
-
-            var user = await User.findOne({ email })
-            if (user) {
-                return callback(false)
-            }
+    await crypto.randomBytes(16, async (err, newSalt) => {
+        var salt = newSalt.toString('base64');
+        await crypto.pbkdf2(password, salt, 10000, 64, 'sha1', async (err, key) => {
+            var encryptedPass = key.toString('base64');
             try{
-                let newUser = new User({ email, password: encryptedPass, salt: newSalt })
+                let newUser = new User({ email, password: encryptedPass, salt })
                 await newUser.save()
                 return callback(true)
             }
