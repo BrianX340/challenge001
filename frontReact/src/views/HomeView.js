@@ -49,7 +49,7 @@ export default function HomeView() {
     return (
         <>
             <Navbar />
-            <main className="section">
+            <section className="container mt-3">
                 <div className="column is-half has-background-white m-auto" id="tableTransactions">
                     <div id="tabs-with-content">
                         <div className="tabs is-centered my-4">
@@ -111,7 +111,7 @@ export default function HomeView() {
                         </div>
                     </div>
                 </div>
-            </main>
+            </section>
         </>
     )
 }

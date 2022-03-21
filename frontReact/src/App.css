@@ -19,6 +19,7 @@ body .viewww {
 
 .App > header {
     background-color: white;
+    z-index: 1;
 }
 
 #tableMoves {
